@@ -1,0 +1,64 @@
+.assessment-in-progress {
+	border: 2px solid #e2e5e8;
+    padding: 10px;
+    background: #edf0f3;
+    height: 75px;
+    box-sizing: border-box;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.option-buttons {
+	position: absolute;
+	height: 75px;
+	right: 0;
+	top: 0;
+	display: none;
+}
+
+.assessment-in-progress:hover > .option-buttons {
+	display: block;
+}
+
+
+.option-buttons a {
+	display: block;
+	float: right;
+	line-height: 71px;
+	width: 71px;
+	text-align: center;
+	font-size: 1.5em;
+	color: #fff;
+}
+
+.button-green {
+	background: #2ab27b;
+}
+
+.button-red {
+	background: #bf5329;
+}
+
+.button-green:hover {
+	background: #20895e;
+}
+
+.button-red:hover {
+	background: #78341a;
+}
+
+
+.option-buttons a:hover {
+	color: #fff;
+}
+
+.assessment-title {
+	font-size: 1.4em;
+	font-weight: 700;
+}
+
+.assessment-description {
+	display: block;
+	font-size: 0.9em;
+	color: #999;
+}
