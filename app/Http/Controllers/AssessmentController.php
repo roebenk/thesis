@@ -49,8 +49,10 @@ class AssessmentController extends Controller {
             return redirect('assessment')->with('flashmessage', ['class' => 'danger', 'message' => 'You do not have permission to view or edit this assessment.']);
         }
 
+        $data['assessment'] = $assessment;
 
-        return view('assessment.edit');
+
+        return view('assessment.edit', $data);
 
     }
 
