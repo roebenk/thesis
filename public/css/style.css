@@ -62,3 +62,46 @@
 	font-size: 0.9em;
 	color: #999;
 }
+
+.add-box {
+	width: 100%;
+	height: 200px;
+	background: #f5f8fa;
+	border: 5px solid #ccc;
+	text-align: center;
+	line-height: 200px;
+	font-size: 50px;
+	border-radius: 5px;
+	display: block;
+}
+
+
+.add-box:hover {
+	border-color: #333;
+}
+
+.assessment-users {
+	background: #f0f0f0;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+.assessment-users-icon, .assessment-devices-icon, .assessment-policies-icon{
+	font-size: 100px;
+	text-align: center;
+	line-height: 200px;
+	height: 200px;
+	border-right: 4px solid #999;
+}
+
+.assessment-devices {
+	background: #e0e0e0;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+.assessment-policies {
+	background: #d0d0d0;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
