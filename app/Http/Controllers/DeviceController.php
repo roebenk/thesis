@@ -37,4 +37,26 @@ class DeviceController extends Controller {
         return view('device.new', $data);
     }
 
+    public function update($id, Request $request) {
+        $device = Device::findOrFail($id);
+
+        $device->name = $request->get('name');
+        $device->devicetype_id = $request->get('devicetype_id');
+        $device->assessment_id = $request->get('assessment_id');
+        $device->save();
+
+        return redirect('assessment/' . $device->assessment_id . '/edit');
+
+    }
+
+    public function destroy($id) {
+        $device = Device::findOrFail($id);
+
+        $id = $device->assessment_id;
+
+        $device->delete();
+
+        return redirect('assessment/' . $id . '/edit');
+    }
+
 }

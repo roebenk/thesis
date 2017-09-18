@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+<div id="svgContainer" style="position: absolute; z-index: 10; width: 100%; height: 100%;"></div>
+
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -22,7 +24,7 @@
                         @foreach($assessment->actors as $actor)
                             <div class="col-lg-3">
 
-                                <div class="assessment-box">
+                                <div class="assessment-box" id="actor-{{ $actor->id }}">
                                     <div class="assessment-box-options">
                                         <div class="btn-group">
                                             <a class="btn btn-sm btn-warning open-edit-actor" data-id="{{ $actor->id }}"><i class="fa fa-pencil"></i></a>
@@ -55,7 +57,7 @@
                         @foreach($assessment->devices as $device)
                             <div class="col-lg-3">
 
-                                <div class="assessment-box">
+                                <div class="assessment-box" id="device-{{ $device->id }}">
                                     <div class="assessment-box-options">
                                         <div class="btn-group">
                                             <a class="btn btn-sm btn-warning open-edit-device" data-id="{{ $device->id }}"><i class="fa fa-pencil"></i></a>
@@ -85,8 +87,25 @@
 
                         </div>
 
+                        @foreach($assessment->assets as $asset)
+                            <div class="col-lg-3">
+
+                                <div class="assessment-box">
+                                    <div class="assessment-box-options">
+                                        <div class="btn-group">
+                                            <a class="btn btn-sm btn-warning open-edit-asset" data-id="{{ $asset->id }}"><i class="fa fa-pencil"></i></a>
+                                            <a class="btn btn-sm btn-danger delete-element" data-href="{{ url('asset/' . $asset->id . '') }}"><i class="fa fa-trash-o"></i></a>
+                                        </div>
+                                    </div> 
+                                    <i class="main-icon fa fa-{{ $asset->assettype->icon }}"></i>
+                                    {{ $asset->name }}
+                                </div>
+
+                            </div>
+                        @endforeach
+
                         <div class="col-lg-3">
-                            <a href="#" class="add-box"><i class="fa fa-plus"></i></a>
+                            <a href="#" class="add-box" id="open-add-asset"><i class="fa fa-plus"></i></a>
                         </div>
 
                     </div>
@@ -102,8 +121,25 @@
 
                         </div>
 
+                        @foreach($assessment->policies as $policy)
+                            <div class="col-lg-3">
+
+                                <div class="assessment-box">
+                                    <div class="assessment-box-options">
+                                        <div class="btn-group">
+                                            <a class="btn btn-sm btn-warning open-edit-policy" data-id="{{ $policy->id }}"><i class="fa fa-pencil"></i></a>
+                                            <a class="btn btn-sm btn-danger delete-element" data-href="{{ url('policy/' . $policy->id . '') }}"><i class="fa fa-trash-o"></i></a>
+                                        </div>
+                                    </div> 
+                                    <i class="main-icon fa fa-{{ $policy->policytype->icon }}"></i>
+                                    {{ $policy->name }}
+                                </div>
+
+                            </div>
+                        @endforeach
+
                         <div class="col-lg-3">
-                            <a href="#" class="add-box"><i class="fa fa-plus"></i></a>
+                            <a href="#" class="add-box" id="open-add-policy"><i class="fa fa-plus"></i></a>
                         </div>
 
                     </div>
@@ -129,7 +165,29 @@
 @endsection
 
 @section('footer-scripts')
+<script src="{{ asset('js/jquery.html-svg-connect.js') }}" type="text/javascript"></script>
+
 <script type="text/javascript">
+
+
+
+    $(document).ready(function() {
+        $("#svgContainer").HTMLSVGconnect({
+            stroke: '#3097D1',
+            paths: [
+                { start: "#device-4", end: "#actor-1" }
+            ]
+        });
+    });
+
+
+
+
+
+
+
+
+
     $('#open-add-device').click(function(){
         $('.modal-body').load('{{ url('device/create') }}?assessment={{ $assessment->id }}',function(result){
             $('#add-element-modal').modal({show:true});
@@ -139,6 +197,20 @@
 
     $('#open-add-actor').click(function(){
         $('.modal-body').load('{{ url('actor/create') }}?assessment={{ $assessment->id }}',function(result){
+            $('#add-element-modal').modal({show:true});
+        });
+        
+    });
+
+    $('#open-add-policy').click(function(){
+        $('.modal-body').load('{{ url('policy/create') }}?assessment={{ $assessment->id }}',function(result){
+            $('#add-element-modal').modal({show:true});
+        });
+        
+    });
+
+    $('#open-add-asset').click(function(){
+        $('.modal-body').load('{{ url('asset/create') }}?assessment={{ $assessment->id }}',function(result){
             $('#add-element-modal').modal({show:true});
         });
         
@@ -155,6 +227,22 @@
     $('.open-edit-device').click(function(){
         var id = $(this).data('id');
         $('.modal-body').load('{!! url("device/' + id + '/edit") !!}?assessment={{ $assessment->id }}',function(result){
+            $('#add-element-modal').modal({show:true});
+        });
+        
+    });
+
+    $('.open-edit-policy').click(function(){
+        var id = $(this).data('id');
+        $('.modal-body').load('{!! url("policy/' + id + '/edit") !!}?assessment={{ $assessment->id }}',function(result){
+            $('#add-element-modal').modal({show:true});
+        });
+        
+    });
+
+    $('.open-edit-asset').click(function(){
+        var id = $(this).data('id');
+        $('.modal-body').load('{!! url("asset/' + id + '/edit") !!}?assessment={{ $assessment->id }}',function(result){
             $('#add-element-modal').modal({show:true});
         });
         

@@ -15,4 +15,8 @@ class Device extends Model
         return $this->belongsTo('App\Models\Assessment');
     }
 
+    public function actors() {
+    	return $this->belongsToMany('App\Models\Actor');
+    }
+
 }

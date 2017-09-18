@@ -27,6 +27,16 @@ class ActorController extends Controller {
 
     }
 
+    public function edit($id, Request $request) {
+        $data['method'] = 'put';
+
+        $actor = Actor::findOrFail($id);
+
+        $data['actor'] = $actor;
+
+        return view('actor.new', $data);
+    }
+
     public function update($id, Request $request) {
         $actor = Actor::findOrFail($id);
 
@@ -37,16 +47,6 @@ class ActorController extends Controller {
 
         return redirect('assessment/' . $actor->assessment_id . '/edit');
 
-    }
-
-    public function edit($id, Request $request) {
-        $data['method'] = 'put';
-
-        $actor = Actor::findOrFail($id);
-
-        $data['actor'] = $actor;
-
-        return view('actor.new', $data);
     }
 
     public function destroy($id) {

@@ -19,5 +19,13 @@ class Assessment extends Model
     	return $this->hasMany('App\Models\Actor');
     }
 
+    public function policies() {
+    	return $this->hasMany('App\Models\Policy');
+    }
+
+    public function assets() {
+        return $this->hasMany('App\Models\Asset');
+    }
+
 
 }

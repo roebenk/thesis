@@ -15,4 +15,8 @@ class Actor extends Model
         return $this->belongsTo('App\Models\Assessment');
     }
 
+    public function devices() {
+    	return $this->belongsToMany('App\Models\Device');
+    }
+
 }
