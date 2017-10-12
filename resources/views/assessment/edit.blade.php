@@ -2,13 +2,16 @@
 
 @section('content')
 
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">Assessment</div>
 
-                <div class="panel-body" style="padding-top: 0; padding-bottom: 0;">
+                <div class="panel-body" style="padding-top: 0; padding-bottom: 0; position: relative;">
+
+                    <a href="#" class="cancel-connect btn btn-danger">Stop connecting</a>
+
 
                     <div class="row">
 
@@ -44,16 +47,6 @@
                                 </div>
                             </div>
 
-                            <div class="row padding-row">
-                                <div class="col-lg-12">
-
-                                    <div class="assessment-policies-icon">
-                                        <i class="fa fa-cogs"  data-toggle="tooltip" title="Policies"></i>
-                                    </div>
-
-                                </div>
-                            </div>
-
                         </div>
 
                         <div class="col-lg-8">
@@ -68,6 +61,7 @@
                                             <div class="assessment-box" id="actor-{{ $actor->id }}">
                                                 <div class="assessment-box-options">
                                                     <div class="btn-group">
+                                                        <a class="btn btn-sm btn-success connect" data-id="{{ $actor->id }}" data-type="actor"><i class="fa fa-share-alt"></i></a>
                                                         <a class="btn btn-sm btn-warning open-edit-actor" data-id="{{ $actor->id }}"><i class="fa fa-pencil"></i></a>
                                                         <a class="btn btn-sm btn-danger delete-element" data-href="{{ url('actor/' . $actor->id . '') }}"><i class="fa fa-trash-o"></i></a>
                                                     </div>
@@ -93,6 +87,7 @@
                                             <div class="assessment-box" id="device-{{ $device->id }}">
                                                 <div class="assessment-box-options">
                                                     <div class="btn-group">
+                                                        <a class="btn btn-sm btn-success connect" data-id="{{ $device->id }}" data-type="device"><i class="fa fa-share-alt"></i></a>
                                                         <a class="btn btn-sm btn-warning open-edit-device" data-id="{{ $device->id }}"><i class="fa fa-pencil"></i></a>
                                                         <a class="btn btn-sm btn-danger delete-element" data-href="{{ url('device/' . $device->id . '') }}"><i class="fa fa-trash-o"></i></a>
                                                     </div>
@@ -118,6 +113,7 @@
                                             <div class="assessment-box" id="asset-{{ $asset->id }}">
                                                 <div class="assessment-box-options">
                                                     <div class="btn-group">
+                                                        <a class="btn btn-sm btn-success connect" data-id="{{ $asset->id }}" data-type="asset"><i class="fa fa-share-alt"></i></a>
                                                         <a class="btn btn-sm btn-warning open-edit-asset" data-id="{{ $asset->id }}"><i class="fa fa-pencil"></i></a>
                                                         <a class="btn btn-sm btn-danger delete-element" data-href="{{ url('asset/' . $asset->id . '') }}"><i class="fa fa-trash-o"></i></a>
                                                     </div>
@@ -148,6 +144,7 @@
                                             <div class="assessment-box" id="policy-{{ $policy->id }}">
                                                 <div class="assessment-box-options">
                                                     <div class="btn-group">
+                                                        <a class="btn btn-sm btn-success" data-id="{{ $policy->id }}" data-type="policy"><i class="fa fa-share-alt"></i></a>
                                                         <a class="btn btn-sm btn-warning open-edit-policy" data-id="{{ $policy->id }}"><i class="fa fa-pencil"></i></a>
                                                         <a class="btn btn-sm btn-danger delete-element" data-href="{{ url('policy/' . $policy->id . '') }}"><i class="fa fa-trash-o"></i></a>
                                                     </div>
@@ -197,43 +194,92 @@
 
 jsPlumb.ready(function() {
     jsPlumb.setContainer(document.getElementById("svgContainer"));
-    jsPlumb.connect({
-        anchor:"AutoDefault",
-        source:"device-4", 
-        target:"actor-1",
-        endpoint:"Blank",
-        endpointStyle:{ fill: "#f00", },
-        paintStyle:{ stroke:"blue", strokeWidth:2 },
-        connector: ["Straight"]
-    });
+    @foreach($assessment->devices as $device) 
+        @foreach($device->actors as $actor)
+
+            var connection = jsPlumb.connect({
+                anchor:"AutoDefault",
+                source:"actor-{{ $actor->id }}", 
+                target:"device-{{ $device->id }}",
+                endpoint:"Blank",
+                endpointStyle:{ fill: "#f00", },
+                paintStyle:{ stroke:"blue", strokeWidth:2 },
+                connector: ["Straight"],
+                hoverPaintStyle:{ stroke:"red" },
+            });
+            connection.bind('click', function() {
+                alert('clicked');
+            });
+        @endforeach
+
+        @foreach($device->assets as $asset)
+
+            var connection = jsPlumb.connect({
+                anchor:"AutoDefault",
+                source:"asset-{{ $asset->id }}", 
+                target:"device-{{ $device->id }}",
+                endpoint:"Blank",
+                endpointStyle:{ fill: "#f00", },
+                paintStyle:{ stroke:"blue", strokeWidth:2 },
+                connector: ["Straight"],
+                hoverPaintStyle:{ stroke:"red" },
+            });
+
+        @endforeach
+
+    @endforeach
 });
 
 
-/*
+    
 
-    $(document).ready(function() {
-        $("#svgContainer").HTMLSVGconnect({
-            stroke: '#3097D0',
-            class: 'dashed-line',
-            strokeWidth: 4,
-            orientation: 'horizontal',
-            paths: [
-                { start: "#device-4", end: "#actor-1" },
-                { start: "#device-1", end: "#actor-1" },
-                { start: "#device-1", end: "#asset-2" },
-                { start: "#device-4", end: "#asset-2" },
-                { start: "#policy-3", end: "#device-1", class: 'policy-line' },
-            ]
-        });
+    var connectingFrom = null;
+
+
+    $('.cancel-connect').click(function() {
+        resetConnecting();
     });
 
+    $('.connect').click(function() {
 
-*/
+        var type = $(this).data('type');
+        var id = $(this).data('id');
+
+        if(connectingFrom !== null) {
+            connect(connectingFrom, { id: id, type: type });
+            resetConnecting();
+        } else {
+            if(type == 'actor') {
+                $("[id^=device]").addClass('pulse');
+            } else if(type == 'device') {
+                $("[id^=asset]").addClass('pulse');
+                $("[id^=actor]").addClass('pulse');
+            } else if(type == 'asset') {
+                $("[id^=device]").addClass('pulse');
+            }
 
 
+            $('.cancel-connect').show();
 
+            connectingFrom = {
+                type: type,
+                id: id
+            };
+        }
 
+    });
 
+    function connect(from, to) {
+        $.post("{{ url('connect') }}", { fromId: from.id, fromType: from.type, toId: to.id, toType: to.type, _token: '{{ csrf_token() }}' });
+        //location.reload();
+
+    }
+
+    function resetConnecting() {
+        $('.pulse').removeClass('pulse');
+        $('.cancel-connect').hide();
+        connectingFrom = null;
+    }
 
     $('#open-add-device').click(function(){
         $('.modal-body').load('{{ url('device/create') }}?assessment={{ $assessment->id }}',function(result){

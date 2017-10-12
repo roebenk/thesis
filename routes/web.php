@@ -17,4 +17,6 @@ Route::middleware('auth')->group(function() {
 	Route::post('assessment-editor/open', 'AssessmentController@open');
 	Route::post('assessment-editor/save', 'AssessmentController@open');
 
+	Route::post('connect', 'ConnectController@connect');
+
 });
