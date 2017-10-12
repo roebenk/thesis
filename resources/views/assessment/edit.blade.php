@@ -58,7 +58,7 @@
                                     @foreach($assessment->actors as $actor)
                                         <div class="col-lg-2">
 
-                                            <div class="assessment-box" id="actor-{{ $actor->id }}">
+                                            <div class="assessment-box" id="actor-{{ $actor->id }}" data-test="bkaat">
                                                 <div class="assessment-box-options">
                                                     <div class="btn-group">
                                                         <a class="btn btn-sm btn-success connect" data-id="{{ $actor->id }}" data-type="actor"><i class="fa fa-share-alt"></i></a>
@@ -144,7 +144,7 @@
                                             <div class="assessment-box" id="policy-{{ $policy->id }}">
                                                 <div class="assessment-box-options">
                                                     <div class="btn-group">
-                                                        <a class="btn btn-sm btn-success" data-id="{{ $policy->id }}" data-type="policy"><i class="fa fa-share-alt"></i></a>
+                                                        <a class="btn btn-sm btn-success connect" data-id="{{ $policy->id }}" data-type="policy"><i class="fa fa-share-alt"></i></a>
                                                         <a class="btn btn-sm btn-warning open-edit-policy" data-id="{{ $policy->id }}"><i class="fa fa-pencil"></i></a>
                                                         <a class="btn btn-sm btn-danger delete-element" data-href="{{ url('policy/' . $policy->id . '') }}"><i class="fa fa-trash-o"></i></a>
                                                     </div>
@@ -206,9 +206,21 @@ jsPlumb.ready(function() {
                 paintStyle:{ stroke:"blue", strokeWidth:2 },
                 connector: ["Straight"],
                 hoverPaintStyle:{ stroke:"red" },
+                parameters: {
+                    sourceId: {{ $actor->id }},
+                    sourceType: 'actor',
+                    targetType: 'device',
+                    targetId: {{ $device->id }}
+                }
             });
             connection.bind('click', function() {
-                alert('clicked');
+                var sourceId = this.getParameter('sourceId');
+                var targetId = this.getParameter('targetId');
+                var sourceType = this.getParameter('sourceType');
+                var targetType = this.getParameter('targetType');
+
+                removeConnection(sourceId, sourceType, targetId, targetType);
+
             });
         @endforeach
 
@@ -223,6 +235,23 @@ jsPlumb.ready(function() {
                 paintStyle:{ stroke:"blue", strokeWidth:2 },
                 connector: ["Straight"],
                 hoverPaintStyle:{ stroke:"red" },
+                parameters: {
+                    sourceId: {{ $device->id }},
+                    sourceType: 'device',
+                    targetType: 'asset',
+                    targetId: {{ $asset->id }}
+                }
+            });
+
+
+            connection.bind('click', function() {
+                var sourceId = this.getParameter('sourceId');
+                var targetId = this.getParameter('targetId');
+                var sourceType = this.getParameter('sourceType');
+                var targetType = this.getParameter('targetType');
+
+                removeConnection(sourceId, sourceType, targetId, targetType);
+
             });
 
         @endforeach
@@ -256,6 +285,9 @@ jsPlumb.ready(function() {
                 $("[id^=actor]").addClass('pulse');
             } else if(type == 'asset') {
                 $("[id^=device]").addClass('pulse');
+            } else if(type == 'policy') {
+                $("[id^=device]").addClass('pulse');
+                $("[id^=actor]").addClass('pulse');
             }
 
 
@@ -271,7 +303,7 @@ jsPlumb.ready(function() {
 
     function connect(from, to) {
         $.post("{{ url('connect') }}", { fromId: from.id, fromType: from.type, toId: to.id, toType: to.type, _token: '{{ csrf_token() }}' });
-        //location.reload();
+        location.reload();
 
     }
 
@@ -279,6 +311,11 @@ jsPlumb.ready(function() {
         $('.pulse').removeClass('pulse');
         $('.cancel-connect').hide();
         connectingFrom = null;
+    }
+
+    function removeConnection(sourceId, sourceType, targetId, targetType) {
+        $.post("{{ url('removeConnection') }}", { fromId: sourceId, toId: targetId, fromType: sourceType, toType: targetType, _token: '{{ csrf_token() }}' });
+        location.reload();
     }
 
     $('#open-add-device').click(function(){

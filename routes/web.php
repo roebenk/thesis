@@ -18,5 +18,6 @@ Route::middleware('auth')->group(function() {
 	Route::post('assessment-editor/save', 'AssessmentController@open');
 
 	Route::post('connect', 'ConnectController@connect');
+	Route::post('removeConnection', 'ConnectController@removeConnection');
 
 });
