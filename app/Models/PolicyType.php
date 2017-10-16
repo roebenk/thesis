@@ -13,4 +13,8 @@ class PolicyType extends Model
         return $this->hasMany('App\Models\Policy');
     }
 
+    public function policyvalues() {
+    	return $this->hasMany('App\Models\PolicyValue', 'policytype_id');
+    }
+
 }
