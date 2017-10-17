@@ -60,5 +60,44 @@ class AssessmentController extends Controller {
         var_dump($request->all());
     }
 
+    public function results($id) {
+        $assessment = Assessment::find($id);
+
+        // This assessment does not exist
+        if(!$assessment) {
+            return redirect('assessment')->with('flashmessage', ['class' => 'danger', 'message' => 'This assessment does not exist.']);
+        }
+
+        // Not allowed to view this assessment
+        if($assessment->user->id != Auth::user()->id) {
+            return redirect('assessment')->with('flashmessage', ['class' => 'danger', 'message' => 'You do not have permission to view or edit this assessment.']);
+        }
+
+
+        $actors = [];
+
+        foreach($assessment->assets as $asset) {
+            $actors[$asset->id] = [];
+
+            $removeDuplicates = [];
+
+            foreach($asset->devices as $device) {
+                foreach($device->actors as $actor) {
+
+                    if(!in_array($actor->id, $removeDuplicates)) {
+                        $actors[$asset->id][] = $actor;
+                        $removeDuplicates[] = $actor->id;
+                    }
+                }
+            }
+
+        }
+
+        $data['assessment'] = $assessment;
+
+        return view('assessment.results', $data);
+    
+    }
+
 
 }

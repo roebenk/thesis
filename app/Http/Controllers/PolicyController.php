@@ -44,6 +44,7 @@ class PolicyController extends Controller {
         $policy->name = $request->get('name');
         $policy->policytype_id = $request->get('policytype_id');
         $policy->assessment_id = $request->get('assessment_id');
+        $policy->policyvalue_id = $request->get('policyvalue_' . $policy->policytype_id . '_id');
         $policy->save();
 
         return redirect('assessment/' . $policy->assessment_id . '/edit');

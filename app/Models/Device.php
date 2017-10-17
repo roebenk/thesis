@@ -23,4 +23,8 @@ class Device extends Model
     	return $this->belongsToMany('App\Models\Asset');
     }
 
+    public function policies() {
+        return $this->belongsToMany('App\Models\Policy');
+    }
+
 }

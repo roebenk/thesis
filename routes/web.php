@@ -9,6 +9,7 @@ Auth::routes();
 
 Route::middleware('auth')->group(function() {
 	Route::resource('assessment', 'AssessmentController');
+	Route::get('assessment/{id}/results', 'AssessmentController@results');
 	Route::resource('device', 'DeviceController');
 	Route::resource('actor', 'ActorController');
 	Route::resource('policy', 'PolicyController');

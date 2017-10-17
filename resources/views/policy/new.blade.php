@@ -1,4 +1,4 @@
-<form action="{{ $method == 'post' ? url('policy') : url('policy/' . $policy->id) }}" method="post">
+<form action="{{ $method == 'post' ? url('policy') : url('policy/' . $policy->id) }}" method="post" novalidate>
 
 	@if($method == 'put')
 		<input type="hidden" name="_method" value="put">
@@ -26,7 +26,7 @@
 		
 		<div class="form-group policyvalues-group" style="display: none;" id="policyvalues-{{ $type->id }}">
 			<label>Value</label>
-			<select name="policytype_{{ $type-> id }}_id" id="policytype-dropdown" class="form-control" required>
+			<select name="policyvalue_{{ $type->id }}_id" id="policyvaluedropdown" class="form-control">
 				@foreach($type->policyvalues as $value)
 					<option value="{{ $value->id }}">{{ $value->variant }}</option>
 				@endforeach

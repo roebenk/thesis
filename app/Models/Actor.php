@@ -19,4 +19,8 @@ class Actor extends Model
     	return $this->belongsToMany('App\Models\Device');
     }
 
+    public function policies() {
+    	return $this->belongsToMany('App\Models\Policy');
+    }
+
 }

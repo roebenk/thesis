@@ -21,6 +21,7 @@ class AssetController extends Controller {
         $asset->name = $request->get('name');
         $asset->assettype_id = $request->get('assettype_id');
         $asset->assessment_id = $request->get('assessment_id');
+        $asset->value = $request->get('value') / 5;
         $asset->save();
 
         return redirect('assessment/' . $asset->assessment_id . '/edit');
@@ -43,6 +44,7 @@ class AssetController extends Controller {
         $asset->name = $request->get('name');
         $asset->assettype_id = $request->get('assettype_id');
         $asset->assessment_id = $request->get('assessment_id');
+        $asset->value = $request->get('value') / 5;
         $asset->save();
 
         return redirect('assessment/' . $asset->assessment_id . '/edit');

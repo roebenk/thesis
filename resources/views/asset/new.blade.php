@@ -21,6 +21,16 @@
 			@endforeach
 		</select>
 	</div>
+
+	<div class="form-group">
+		<label>Value of asset</label>
+		<select name="value" class="form-control" required>
+			@for($i = 1; $i <= 5; $i++)
+				<option value="{{ $i }}" <?php echo $i == ($asset->value * 5) ? 'selected="selected"' : ''; ?>>{{ $i }}</option>
+			@endfor
+		</select>
+	</div>
+
     
     <button class="btn btn-default" data-dismiss="modal" type="button">Cancel</button>
 
