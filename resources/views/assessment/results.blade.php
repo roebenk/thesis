@@ -88,6 +88,7 @@
                                             <div class="col-lg-2">
 
                                                 <div class="assessment-box" id="asset-{{ $asset->id }}">
+                                                    <div class="risk-result" style="background: {{ $asset->getRiskColor() }}">{{ $asset->getRiskName() }} risk</div>
                                                     <i class="main-icon fa fa-{{ $asset->assettype->icon }}"></i>
                                                     {{ $asset->name }}
                                                 </div>

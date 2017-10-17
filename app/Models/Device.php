@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Device extends Model
 {
 
+    public $probability;
+
+    public function setProbability($p) {
+        $this->probability = $p;
+    }
+
 	public function devicetype() {
         return $this->belongsTo('App\Models\DeviceType');
     }

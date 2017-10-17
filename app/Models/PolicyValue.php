@@ -13,4 +13,8 @@ class PolicyValue extends Model
         return $this->belongsTo('App\Models\PolicyType');
     }
 
+    public function policy() {
+        return $this->belongsTo('App\Models\Policy');
+    }
+
 }

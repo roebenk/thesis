@@ -73,31 +73,49 @@ class AssessmentController extends Controller {
             return redirect('assessment')->with('flashmessage', ['class' => 'danger', 'message' => 'You do not have permission to view or edit this assessment.']);
         }
 
+        // Calculate Actors
+        $assessment->calculateActors();
 
-        $actors = [];
+        // Calculate Devices
+        $assessment->calculateDevices();
 
+        $devicesP = $assessment->devices->keyBy('id');
+        $actorsP = $assessment->actors->keyBy('id');
+
+        // Calculate assets
         foreach($assessment->assets as $asset) {
-            $actors[$asset->id] = [];
 
             $removeDuplicates = [];
 
             foreach($asset->devices as $device) {
+
+                $dp = $devicesP->get($device->id);
+
+                $asset->addEffect($dp->probability);
+
                 foreach($device->actors as $actor) {
 
                     if(!in_array($actor->id, $removeDuplicates)) {
-                        $actors[$asset->id][] = $actor;
+
+                        $ap = $actorsP->get($actor->id);
+
+                        $asset->addEffect($ap->probability);
                         $removeDuplicates[] = $actor->id;
                     }
+
                 }
+
             }
 
-        }
+            $asset->calculateProbability();
+            $asset->calculateRisk();
 
+        }
+        
         $data['assessment'] = $assessment;
 
         return view('assessment.results', $data);
     
     }
-
 
 }

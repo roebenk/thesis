@@ -200,3 +200,14 @@
 	margin: 0 auto;
 	display: none;
 }
+
+.risk-result {
+	position: absolute;
+    top: -15px;
+    right: -15px;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #fff;
+}

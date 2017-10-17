@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Actor extends Model
 {
+    public $probability;
 
+    public function setProbability($p) {
+        $this->probability = $p;
+    }
+    
 	public function actortype() {
         return $this->belongsTo('App\Models\ActorType');
     }

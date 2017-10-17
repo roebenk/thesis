@@ -13,6 +13,10 @@ class Policy extends Model
         return $this->belongsTo('App\Models\PolicyType');
     }
 
+    public function policyvalue() {
+        return $this->belongsTo('App\Models\PolicyValue');
+    }
+
     public function assessment() {
         return $this->belongsTo('App\Models\Assessment');
     }
