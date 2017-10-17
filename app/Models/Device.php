@@ -13,6 +13,34 @@ class Device extends Model
         $this->probability = $p;
     }
 
+    public function getProbabilityName() {
+        if($this->probability > 0.8) {
+            return 'Very high';
+        } elseif($this->probability > 0.6) {
+            return 'High';
+        } elseif($this->probability > 0.4) {
+            return 'Medium';
+        } elseif($this->probability > 0.2) {
+            return 'Low';
+        } else {
+            return 'Very low';
+        }
+    }
+
+    public function getProbabilityColor() {
+        if($this->probability > 0.8) {
+            return '#BF0008';
+        } elseif($this->probability > 0.6) {
+            return '#BE5208';
+        } elseif($this->probability > 0.4) {
+            return '#BEA611';
+        } elseif($this->probability > 0.2) {
+            return '#8ABE1A';
+        } else {
+            return '#47BE22';
+        }
+    }
+
 	public function devicetype() {
         return $this->belongsTo('App\Models\DeviceType');
     }

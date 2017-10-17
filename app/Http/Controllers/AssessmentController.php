@@ -82,13 +82,14 @@ class AssessmentController extends Controller {
         $devicesP = $assessment->devices->keyBy('id');
         $actorsP = $assessment->actors->keyBy('id');
 
+
         // Calculate assets
         foreach($assessment->assets as $asset) {
 
             $removeDuplicates = [];
 
             foreach($asset->devices as $device) {
-
+                $asset->addElementId('"#device-' . $device->id . '"');
                 $dp = $devicesP->get($device->id);
 
                 $asset->addEffect($dp->probability);
@@ -97,6 +98,7 @@ class AssessmentController extends Controller {
 
                     if(!in_array($actor->id, $removeDuplicates)) {
 
+                        $asset->addElementId('"#actor-' . $actor->id . '"');
                         $ap = $actorsP->get($actor->id);
 
                         $asset->addEffect($ap->probability);

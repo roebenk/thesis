@@ -49,15 +49,15 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-8">
+                                <div class="col-lg-9">
 
                                     <div class="row padding-row">
 
                                         @foreach($assessment->actors as $actor)
                                             <div class="col-lg-2">
 
-                                                <div class="assessment-box" id="actor-{{ $actor->id }}" data-test="bkaat">
-                                                    
+                                                <div class="assessment-box" id="actor-{{ $actor->id }}">
+                                                    <div class="probability-result" style="background: {{ $actor->getProbabilityColor() }}">{{ $actor->getProbabilityName() }} probability of breach</div>
                                                     <i class="main-icon fa fa-{{ $actor->actortype->icon }}"></i>
                                                     {{ $actor->name }}
                                                 </div>
@@ -73,6 +73,7 @@
                                             <div class="col-lg-2">
 
                                                 <div class="assessment-box" id="device-{{ $device->id }}">
+                                                    <div class="probability-result" style="background: {{ $device->getProbabilityColor() }}">{{ $device->getProbabilityName() }} probability of breach</div>
                                                     <i class="main-icon fa fa-{{ $device->devicetype->icon }}"></i>
                                                     {{ $device->name }}
                                                 </div>
@@ -87,7 +88,7 @@
                                         @foreach($assessment->assets as $asset)
                                             <div class="col-lg-2">
 
-                                                <div class="assessment-box" id="asset-{{ $asset->id }}">
+                                                <div class="assessment-box asset-box" id="asset-{{ $asset->id }}" data-connectedelements="[{{ implode(',', $asset->connectedElementsIds) }}]">
                                                     <div class="risk-result" style="background: {{ $asset->getRiskColor() }}">{{ $asset->getRiskName() }} risk</div>
                                                     <i class="main-icon fa fa-{{ $asset->assettype->icon }}"></i>
                                                     {{ $asset->name }}
@@ -98,20 +99,20 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-2">
+                                <div class="col-lg-1">
 
                                     @foreach($assessment->policies as $policy)
 
-                                            <div class="row padding-row" style="padding-right: 20px">
-                                                <div class="col-lg-12">
+                                        <div class="row padding-row" style="padding-right: 20px; padding-top: 10px; padding-bottom: 10px;">
+                                            <div class="col-lg-12">
 
-                                                    <div class="assessment-box" id="policy-{{ $policy->id }}">
-                                                        <i class="main-icon fa fa-{{ $policy->policytype->icon }}"></i>
-                                                        {{ $policy->name }}
-                                                    </div>
-
+                                                <div class="assessment-box assessment-box-policy" id="policy-{{ $policy->id }}">
+                                                    <i class="main-icon fa fa-{{ $policy->policytype->icon }}"></i>
+                                                    {{ $policy->name }}
                                                 </div>
+
                                             </div>
+                                        </div>
                                     @endforeach
                                 </div>
 
@@ -132,7 +133,6 @@
 <script src="{{ asset('js/jquery.html-svg-connect.js') }}" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.2.9/jsplumb.js"></script>
 <script type="text/javascript">
-
 
 <?php
 function parseConnection($sourceId, $sourceType, $targetId, $targetType, $color = 'blue') {
@@ -199,6 +199,21 @@ jsPlumb.ready(function() {
     $(function() {
         $('#panel-to-set-height').height($('#row-with-height').height());
     });
+
+    $('.asset-box').hover(function() {
+        var ids = $(this).data('connectedelements');
+
+        $('.assessment-box').css('opacity', 0.3)
+        $(this).css('opacity', 1);
+        $('.assessment-box-policy').css('opacity',1)
+        $.each(ids, function(key, val) {
+            $(val).css('opacity', 1);
+        });
+    });
+
+    $('.asset-box').on('mouseleave', function() {
+        $('.assessment-box').css('opacity', 1)
+    })
 
 </script>
 @endsection

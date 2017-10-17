@@ -8,8 +8,13 @@ class Asset extends Model
 {
 
 	public $effects = [];
+	public $connectedElementsIds = [];
 	public $probability = 0;
 	public $risk = 0;
+
+	public function addElementId($id) {
+		$this->connectedElementsIds[] = $id;
+	}
 
 	public function addEffect($e) {
 		$this->effects[] = $e;
