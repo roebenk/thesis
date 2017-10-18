@@ -1,5 +1,16 @@
 @extends('layouts.app')
 
+@section('help-text')
+    In the visual representation box, the structure of the company as created can be seen.
+    For every component, the breach probability (or for the asset the risk severity) is displayed.
+    This severity corresponds with a color (green is low severity and red is high severity).
+    Hovering over the different assets shows what components influence the risk on that asset.
+    <br><br>
+    In the Ranking representation box the risks and probabilities shown in the visual representation are shown in a table.
+    The components (actors and devices) are ranked in breach probability.
+    This helps pinpointing were the weakest links in the company are.
+@endsection
+
 @section('content')
 
 <div class="container-fluid">

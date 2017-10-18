@@ -49,7 +49,7 @@
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
                             <li><a href="{{ url('assessment') }}">Assessments</a></li>
-                            <li><a href="{{ url('policytype') }}">Knowledge base</a></li>
+                            <?php /* <li><a href="{{ url('policytype') }}">Knowledge base</a></li> */ ?>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     {{ Auth::user()->name }} <span class="caret"></span>
@@ -69,6 +69,7 @@
                                     </li>
                                 </ul>
                             </li>
+                            <li><a href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-question-circle"></i></a></li>
                         @endif
                     </ul>
                 </div>
@@ -88,6 +89,20 @@
         </div>
 
         @yield('content')
+    </div>
+
+    <div aria-labelledby="myModalLabel" class="modal fade" id="myModal" role="dialog" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Information</h4>
+                </div>
+                <div class="modal-body">
+                    @yield('help-text', 'No information available')
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Scripts -->

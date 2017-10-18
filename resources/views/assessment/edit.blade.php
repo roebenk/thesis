@@ -1,5 +1,17 @@
 @extends('layouts.app')
 
+@section('help-text')
+    In this section the company can be structured with the help of building blocks.
+    On the left side are, from top to bottom, the actors, devices and assets.
+    On the right side are the policies that can work on actors or devices.
+    When hovering over an component, the options become visisble.
+    With the green connection button different components can be linked.
+    With this connection, the connections between components can be shown.
+    It is important that only actors can access devices, with which they can access assets.
+    To improve security on different components, policies can be linked to the components.
+    These policies will have an impact on the breach probability of the components, and thus the risk that works on the asset.
+@endsection
+
 @section('content')
 
 <div class="container-fluid">
