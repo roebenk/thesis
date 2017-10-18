@@ -8,7 +8,7 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    The results from the assessment can be shown in either a visual way or in a ranked way
+                    The results from the assessment can be shown in either a visual way or in a ranked way. To go back to editing the assessment, click <a href="{{ url('assessment/' . $assessment->id . '/edit') }}">here</a>.
                 </div>
             </div>
         </div>
@@ -142,9 +142,9 @@
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading"> &nbsp;Ranking representation <a href="#" class="btn btn-primary btn-xs pull-left" id="toggle-visual">Show</a> </div>
+                <div class="panel-heading"> &nbsp;Ranking representation <a href="#" class="btn btn-primary btn-xs pull-left" id="toggle-ranking">Show</a> </div>
 
-                <div class="panel-body">
+                <div class="panel-body" id="ranking-representation" style="display: none;">
 
                     <div class="col-lg-4">
 
@@ -263,7 +263,21 @@ jsPlumb.ready(function() {
     $(function() {
         $('#panel-to-set-height').height($('#row-with-height').height());
 
-        $('#toggle-visual').click(function() {
+         $('#toggle-ranking').click(function(e) {
+            e.preventDefault();
+
+            $('#ranking-representation').slideToggle();
+
+            if($('#toggle-ranking').html() == 'Show')
+                $('#toggle-ranking').html('Hide');
+            else
+                $('#toggle-ranking').html('Show')
+
+        });
+
+
+        $('#toggle-visual').click(function(e) {
+            e.preventDefault();
 
             if($('#toggle-visual').html() == 'Show')
                 $('#toggle-visual').html('Hide');
