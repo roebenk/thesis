@@ -49,7 +49,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-8">
+                                <div class="col-lg-9">
 
                                     <div class="row padding-row">
 
@@ -130,20 +130,18 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-2">
+                                <div class="col-lg-1">
 
                                     @foreach($assessment->policies as $policy)
 
                                             <div class="row padding-row" style="padding-right: 20px">
                                                 <div class="col-lg-12">
 
-                                                    <div class="assessment-box" id="policy-{{ $policy->id }}">
+                                                    <div class="assessment-box assessment-box-policy" id="policy-{{ $policy->id }}">
                                                         <div class="assessment-box-options">
-                                                            <div class="btn-group">
                                                                 <a class="btn btn-sm btn-success connect" data-id="{{ $policy->id }}" data-type="policy" data-workson="{{ $policy->policytype->works_on }}"><i class="fa fa-share-alt"></i></a>
                                                                 <a class="btn btn-sm btn-warning open-edit-policy" data-id="{{ $policy->id }}"><i class="fa fa-pencil"></i></a>
-                                                                <a class="btn btn-sm btn-danger delete-element" data-href="{{ url('policy/' . $policy->id . '') }}"><i class="fa fa-trash-o"></i></a>
-                                                            </div>
+                                                                <a class="btn btn-sm btn-danger delete-element" data-href="{{ url('policy/' . $policy->id . '') }}"><i class="fa fa-trash-o"></i></a>&nbsp;
                                                         </div> 
                                                         <i class="main-icon fa fa-{{ $policy->policytype->icon }}"></i>
                                                         {{ $policy->name }}
@@ -250,6 +248,12 @@ jsPlumb.ready(function() {
 
         @foreach($policy->devices as $device)
             {!! parseConnection($policy->id, 'policy', $device->id, 'device', 'red') !!}
+        @endforeach
+
+
+
+        @foreach($policy->actors as $actor)
+            {!! parseConnection($policy->id, 'policy', $actor->id, 'actor', 'red') !!}
         @endforeach
 
     @endforeach

@@ -9,6 +9,10 @@ class Device extends Model
 
     public $probability;
 
+    public function getType() {
+        return 'Device';
+    }
+
     public function setProbability($p) {
         $this->probability = $p;
     }

@@ -3,14 +3,24 @@
 @section('content')
 
 <div class="container-fluid">
+
+     <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    The results from the assessment can be shown in either a visual way or in a ranked way
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading">Assessment</div>
+                <div class="panel-heading"> &nbsp;Visual representation <a href="#" class="btn btn-primary btn-xs pull-left" id="toggle-visual">Hide</a> </div>
 
                 <div class="panel-body" id="panel-to-set-height" style="padding-top: 0; height: 500px; padding-bottom: 0; position: relative;">
-
-                    <a href="#" class="cancel-connect btn btn-danger">Stop connecting</a>
 
                         <div id="svgContainer">
 
@@ -58,6 +68,7 @@
 
                                                 <div class="assessment-box" id="actor-{{ $actor->id }}">
                                                     <div class="probability-result" style="background: {{ $actor->getProbabilityColor() }}">{{ $actor->getProbabilityName() }} probability of breach</div>
+                                                    <div class="probability-ranking">{{ array_search('a' . $actor->id, array_keys($ranking)) + 1 }}</div>
                                                     <i class="main-icon fa fa-{{ $actor->actortype->icon }}"></i>
                                                     {{ $actor->name }}
                                                 </div>
@@ -74,6 +85,7 @@
 
                                                 <div class="assessment-box" id="device-{{ $device->id }}">
                                                     <div class="probability-result" style="background: {{ $device->getProbabilityColor() }}">{{ $device->getProbabilityName() }} probability of breach</div>
+                                                    <div class="probability-ranking">{{ array_search('d' . $device->id, array_keys($ranking)) + 1 }}</div>
                                                     <i class="main-icon fa fa-{{ $device->devicetype->icon }}"></i>
                                                     {{ $device->name }}
                                                 </div>
@@ -120,17 +132,65 @@
 
                         </div>
 
-                    </div>
+                    
                 </div>
             </div>
         </div>
     </div>
-</div><!-- Button trigger modal -->
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading"> &nbsp;Ranking representation <a href="#" class="btn btn-primary btn-xs pull-left" id="toggle-visual">Show</a> </div>
+
+                <div class="panel-body">
+
+                    <div class="col-lg-4">
+
+                        <h4>Actors and devices with highest breach probability</h4>
+
+                        <table class="table table-condensed table-striped">
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Breach probability</th>
+                            </tr>
+                            <?php $i = 1; ?>
+                            @foreach($ranking as $key => $ranking)
+                                <?php
+                                if($key[0] == 'a')
+                                    $c = $actorsP->get($key[1]);
+                                elseif($key[0] == 'd')
+                                    $c = $devicesP->get($key[1]);
+                                ?>
+                                <tr>
+                                    <td>{{ $i++ }}</td>
+                                    <td>{{ $c->name }}</td>
+                                    <td>{{ $c->getType() }}</td>
+                                    <td class="text-center" style=" color: #fff; background: {{ $c->getProbabilityColor() }}">{{ $c->getProbabilityName() }}</td>
+                                </tr>
+                            @endforeach
+                        </table>
+
+                    </div>
+
+                    <div class="col-lg-6">
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 @endsection
 
 @section('footer-scripts')
-<script src="{{ asset('js/jquery.html-svg-connect.js') }}" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.2.9/jsplumb.js"></script>
 <script type="text/javascript">
 
@@ -185,10 +245,14 @@ jsPlumb.ready(function() {
 
     @endforeach
 
-    @foreach($assessment->policies as $policy) 
+    @foreach($assessment->policies as $policy)
 
         @foreach($policy->devices as $device)
             {!! parseConnection($policy->id, 'policy', $device->id, 'device', 'red') !!}
+        @endforeach
+
+        @foreach($policy->actors as $actor)
+            {!! parseConnection($policy->id, 'policy', $actor->id, 'actor', 'red') !!}
         @endforeach
 
     @endforeach
@@ -198,6 +262,19 @@ jsPlumb.ready(function() {
     
     $(function() {
         $('#panel-to-set-height').height($('#row-with-height').height());
+
+        $('#toggle-visual').click(function() {
+
+            if($('#toggle-visual').html() == 'Show')
+                $('#toggle-visual').html('Hide');
+            else
+                $('#toggle-visual').html('Show')
+
+
+            $('#panel-to-set-height').slideToggle(function() {
+                $('#panel-to-set-height').height($('#row-with-height').height());
+            });
+        })
     });
 
     $('.asset-box').hover(function() {

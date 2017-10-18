@@ -14,6 +14,7 @@ Route::middleware('auth')->group(function() {
 	Route::resource('actor', 'ActorController');
 	Route::resource('policy', 'PolicyController');
 	Route::resource('asset', 'AssetController');
+	Route::resource('policytype', 'PolicyTypeController');
 
 	Route::post('assessment-editor/open', 'AssessmentController@open');
 	Route::post('assessment-editor/save', 'AssessmentController@open');

@@ -79,9 +79,21 @@ class AssessmentController extends Controller {
         // Calculate Devices
         $assessment->calculateDevices();
 
-        $devicesP = $assessment->devices->keyBy('id');
-        $actorsP = $assessment->actors->keyBy('id');
+        $data['devicesP'] = $devicesP = $assessment->devices->keyBy('id');
+        $data['actorsP'] = $actorsP = $assessment->actors->keyBy('id');
 
+        // Rank devices and actors
+        $ranking = [];
+        foreach($devicesP as $device) {
+            $ranking['d' . $device->id] = $device->probability;
+        }
+
+        foreach($actorsP as $actor) {
+            $ranking['a' . $actor->id] = $actor->probability;
+        }
+
+        arsort($ranking);
+        $data['ranking'] = $ranking;
 
         // Calculate assets
         foreach($assessment->assets as $asset) {

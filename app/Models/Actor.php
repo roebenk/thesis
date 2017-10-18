@@ -8,6 +8,10 @@ class Actor extends Model
 {
     public $probability;
 
+    public function getType() {
+        return 'Actor';
+    }
+
     public function setProbability($p) {
         $this->probability = $p;
     }
