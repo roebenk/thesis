@@ -187,8 +187,24 @@
 
                     </div>
 
-                    <div class="col-lg-6">
-
+                    <div class="col-lg-4">
+                        <h4>Assets with highest risk</h4>
+                        <table class="table table-condensed table-striped">
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Risk</th>
+                            </tr>
+                            <?php $i = 1; ?>
+                            @foreach($assetRanking as $key => $ranking)
+                                <?php $c = $assets->get($key); ?>
+                                <tr>
+                                    <td>{{ $i++ }}</td>
+                                    <td>{{ $c->name }}</td>
+                                    <td class="text-center" style=" color: #fff; background: {{ $c->getRiskColor() }}">{{ $c->getRiskName() }}</td>
+                                </tr>
+                            @endforeach
+                        </table>
 
                     </div>
 
@@ -206,16 +222,16 @@
 <script type="text/javascript">
 
 <?php
-function parseConnection($sourceId, $sourceType, $targetId, $targetType, $color = 'blue') {
+function parseConnection($sourceId, $sourceType, $targetId, $targetType, $color = 'blue', $anchor = '"AutoDefault"') {
     $r = 'var connection = jsPlumb.connect({
-                anchor:"AutoDefault",
+                anchor:'. $anchor . ',
                 source:"' . $sourceType . '-' . $sourceId . '", 
                 target:"' . $targetType . '-' . $targetId . '",
                 endpoint:"Blank",
                 endpointStyle:{ fill: "#f00", },
                 paintStyle:{ stroke:"' . $color . '", strokeWidth:2 },
                 connector: ["Straight"],
-                hoverPaintStyle:{ stroke:"purple" },
+                hoverPaintStyle:{ stroke:"purple", strokeWidth: 5 },
                 parameters: {
                     sourceId: ' . $sourceId . ',
                     sourceType: "' . $sourceType . '",
@@ -237,22 +253,33 @@ function parseConnection($sourceId, $sourceType, $targetId, $targetType, $color 
 
     return $r;
 }
+
+function stringToColorCode($str) {
+  return '#'.substr(md5($str), 0, 6);
+  return '#' . $code;
+}
 ?>
+
+
+$(window).resize(function(){
+    jsPlumb.repaintEverything();
+});
 
 jsPlumb.ready(function() {
     jsPlumb.setContainer(document.getElementById("svgContainer"));
     @foreach($assessment->devices as $device) 
         @foreach($device->actors as $actor)
 
-            {!! parseConnection($actor->id, 'actor', $device->id, 'device') !!}
+            {!! parseConnection($actor->id, 'actor', $device->id, 'device', stringToColorCode($actor->name.$asset->name), '["Top","Bottom"]') !!}
 
         @endforeach
 
         @foreach($device->assets as $asset)
 
-            {!! parseConnection($device->id, 'device', $asset->id, 'asset') !!}
+            {!! parseConnection($device->id, 'device', $asset->id, 'asset', stringToColorCode($device->name.$asset->name), '["Top","Bottom"]') !!}
 
         @endforeach
+
 
     @endforeach
 
@@ -277,7 +304,9 @@ jsPlumb.ready(function() {
          $('#toggle-ranking').click(function(e) {
             e.preventDefault();
 
-            $('#ranking-representation').slideToggle();
+            $('#ranking-representation').slideToggle(function() {
+                jsPlumb.repaintEverything();
+            });
 
             if($('#toggle-ranking').html() == 'Show')
                 $('#toggle-ranking').html('Hide');

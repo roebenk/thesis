@@ -17,17 +17,15 @@
                     @foreach($assessments as $assessment) 
                         <div class="assessment-in-progress">
                             <span class="assessment-title">{{ $assessment->name }}</span>
-                            <span class="assessment-description"><i class="fa fa-clock-o"></i> Created on {{ $assessment->created_at->format('d-m-Y') }} <i class="fa fa-sitemap"></i> 15 nodes</span>
+                            <span class="assessment-description"><i class="fa fa-clock-o"></i> Created on {{ $assessment->created_at->format('d-m-Y') }}</span>
 
                             <div class="option-buttons">
-                                <a href="#" class="button-red"><i class="fa fa-trash-o"></i></a>
+                                <a href="{{ url('assessment/' . $assessment->id . '/delete') }}" class="button-red"><i class="fa fa-trash-o"></i></a>
                                 <a href="{{ url('assessment/' . $assessment->id . '/edit') }}" class="button-green"><i class="fa fa-edit"></i></a>
                             </div>
 
                         </div>
                     @endforeach
-
-                    
 
                 </div>
             </div>

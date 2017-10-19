@@ -7,19 +7,29 @@ use Illuminate\Database\Eloquent\Model;
 class Asset extends Model
 {
 
+	// All different component probabilities working on this asset
 	public $effects = [];
+
+	// All component ids working on this asset
 	public $connectedElementsIds = [];
+
+	// Probabiltiy
 	public $probability = 0;
+
+	// Risk
 	public $risk = 0;
 
+	// Add connected component
 	public function addElementId($id) {
 		$this->connectedElementsIds[] = $id;
 	}
 
+	// Add the effect of a connected component
 	public function addEffect($e) {
 		$this->effects[] = $e;
 	}
 
+	// Calculate the probability of this asset being breached
 	public function calculateProbability() {
 
 		$p = 1;
@@ -32,10 +42,12 @@ class Asset extends Model
 
 	}
 
+	// Risk = probability * impact
 	public function calculateRisk() {
 		$this->risk = $this->probability * $this->value;
 	}
 
+	// Get the name for the risk
 	public function getRiskName() {
 		if($this->risk > 0.8) {
 			return 'Very high';
@@ -50,6 +62,7 @@ class Asset extends Model
 		}
 	}
 
+	// Get the color for the risk
 	public function getRiskColor() {
 		if($this->risk > 0.8) {
 			return '#BF0008';

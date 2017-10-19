@@ -9,14 +9,17 @@ class Device extends Model
 
     public $probability;
 
+    // Get type of componenent
     public function getType() {
         return 'Device';
     }
 
+    // Set the probability
     public function setProbability($p) {
         $this->probability = $p;
     }
 
+    // Get name for the probability
     public function getProbabilityName() {
         if($this->probability > 0.8) {
             return 'Very high';
@@ -31,6 +34,7 @@ class Device extends Model
         }
     }
 
+    // Get corresponding color for probability
     public function getProbabilityColor() {
         if($this->probability > 0.8) {
             return '#BF0008';

@@ -146,7 +146,7 @@
 
                                     @foreach($assessment->policies as $policy)
 
-                                            <div class="row padding-row" style="padding-right: 20px">
+                                            <div class="row padding-row"  style="padding-right: 20px; padding-top: 10px; padding-bottom: 10px;">
                                                 <div class="col-lg-12">
 
                                                     <div class="assessment-box assessment-box-policy" id="policy-{{ $policy->id }}">
@@ -206,9 +206,9 @@
 
 
 <?php
-function parseConnection($sourceId, $sourceType, $targetId, $targetType, $color = 'blue') {
+function parseConnection($sourceId, $sourceType, $targetId, $targetType, $color = 'blue', $anchor = '"AutoDefault"') {
     $r = 'var connection = jsPlumb.connect({
-                anchor:"AutoDefault",
+                anchor:'. $anchor . ',
                 source:"' . $sourceType . '-' . $sourceId . '", 
                 target:"' . $targetType . '-' . $targetId . '",
                 endpoint:"Blank",
@@ -237,6 +237,11 @@ function parseConnection($sourceId, $sourceType, $targetId, $targetType, $color 
 
     return $r;
 }
+
+function stringToColorCode($str) {
+  return '#'.substr(md5($str), 0, 6);
+  return '#' . $code;
+}
 ?>
 
 jsPlumb.ready(function() {
@@ -244,13 +249,13 @@ jsPlumb.ready(function() {
     @foreach($assessment->devices as $device) 
         @foreach($device->actors as $actor)
 
-            {!! parseConnection($actor->id, 'actor', $device->id, 'device') !!}
+            {!! parseConnection($actor->id, 'actor', $device->id, 'device', stringToColorCode($actor->name.$asset->name), '["Top","Bottom"]') !!}
 
         @endforeach
 
         @foreach($device->assets as $asset)
 
-            {!! parseConnection($device->id, 'device', $asset->id, 'asset') !!}
+            {!! parseConnection($device->id, 'device', $asset->id, 'asset', stringToColorCode($device->name.$asset->name), '["Top","Bottom"]') !!}
 
         @endforeach
 

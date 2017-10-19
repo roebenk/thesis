@@ -9,12 +9,14 @@ use App\Models\Actor;
 
 class ActorController extends Controller {
 
+    // Create new assessment
     public function create() {
         $data['method'] = 'post';
         $data['actor'] = new Actor;
         return view('actor.new', $data);
     }
 
+    /// Save that new asessment
     public function store(Request $request) {
         $actor = new Actor;
 
@@ -27,6 +29,7 @@ class ActorController extends Controller {
 
     }
 
+    // Edit assessment
     public function edit($id, Request $request) {
         $data['method'] = 'put';
 
@@ -37,6 +40,7 @@ class ActorController extends Controller {
         return view('actor.new', $data);
     }
 
+    // Store edits to assessment
     public function update($id, Request $request) {
         $actor = Actor::findOrFail($id);
 
@@ -49,6 +53,7 @@ class ActorController extends Controller {
 
     }
 
+    // Delete an assessment
     public function destroy($id) {
         $actor = Actor::findOrFail($id);
 

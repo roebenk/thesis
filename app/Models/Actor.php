@@ -6,16 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Actor extends Model
 {
+
+    // Breach probability
     public $probability;
 
+    // Get the type of the component
     public function getType() {
         return 'Actor';
     }
 
+    // Set the breach probability
     public function setProbability($p) {
         $this->probability = $p;
     }
 
+    // Return the name that fits the probability
     public function getProbabilityName() {
         if($this->probability > 0.8) {
             return 'Very high';
@@ -30,6 +35,7 @@ class Actor extends Model
         }
     }
 
+    // Return a color from red (high probabiltiy) to green (low probability)
     public function getProbabilityColor() {
         if($this->probability > 0.8) {
             return '#BF0008';

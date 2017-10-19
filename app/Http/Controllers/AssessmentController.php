@@ -96,6 +96,7 @@ class AssessmentController extends Controller {
         $data['ranking'] = $ranking;
 
         // Calculate assets
+        $data['assetRanking'] = [];
         foreach($assessment->assets as $asset) {
 
             $removeDuplicates = [];
@@ -124,12 +125,24 @@ class AssessmentController extends Controller {
             $asset->calculateProbability();
             $asset->calculateRisk();
 
+            $data['assets'] = $assessment->assets->keyBy('id');
+
+            $data['assetRanking'][$asset->id] = $asset->risk;
+
         }
+
+        arsort($data['assetRanking']);
         
         $data['assessment'] = $assessment;
 
         return view('assessment.results', $data);
     
+    }
+
+    public function destroy($id) {
+        $a = Assessment::findOrFail($id);
+        $a->delete();
+        return redirect('assessment');
     }
 
 }
