@@ -26,12 +26,12 @@ class Asset extends Model
 
 	// Add the effect of a connected component
 	public function addEffect($e) {
-		$this->effects[] = $e;
+		$this->effects[] = (float) $e;
 	}
 
 	// Calculate the probability of this asset being breached
 	public function calculateProbability() {
-
+var_dump($this->effects);
 		$p = 1;
 
 		foreach($this->effects as $e) {
@@ -39,6 +39,13 @@ class Asset extends Model
 		}
 
 		$this->probability = 1 - $p;
+
+
+		echo '<br>';
+
+		var_dump($this->probability);
+
+		echo '<br>';
 
 	}
 

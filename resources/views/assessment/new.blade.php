@@ -27,6 +27,11 @@
                             <input type="text" class="form-control" name="name">
                         </div>
 
+                        <div class="form-group">
+                            <label>Are there multiple user groups in the company? Name them below:</label>
+                            <input type="text" class="form-control" name="name">
+                        </div>
+
 
                         <input type="submit" class="btn btn-block btn-success" value="Create new assessment">
 

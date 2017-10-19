@@ -215,7 +215,7 @@ function parseConnection($sourceId, $sourceType, $targetId, $targetType, $color 
                 endpointStyle:{ fill: "#f00", },
                 paintStyle:{ stroke:"' . $color . '", strokeWidth:2 },
                 connector: ["Straight"],
-                hoverPaintStyle:{ stroke:"purple" },
+                hoverPaintStyle:{ stroke:"purple", strokeWidth: 5 },
                 parameters: {
                     sourceId: ' . $sourceId . ',
                     sourceType: "' . $sourceType . '",
