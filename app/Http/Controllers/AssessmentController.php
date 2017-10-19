@@ -101,12 +101,14 @@ class AssessmentController extends Controller {
 
             $removeDuplicates = [];
 
+            // Loop through all devices in the assessment
             foreach($asset->devices as $device) {
                 $asset->addElementId('"#device-' . $device->id . '"');
                 $dp = $devicesP->get($device->id);
 
                 $asset->addEffect($dp->probability);
 
+                // Loop through all the actors that are connected to the devices in this assessment
                 foreach($device->actors as $actor) {
 
                     if(!in_array($actor->id, $removeDuplicates)) {

@@ -334,15 +334,45 @@ jsPlumb.ready(function() {
     $('.asset-box').hover(function() {
         var ids = $(this).data('connectedelements');
 
+        var asset_id = $(this).attr('id');
+
         $('.assessment-box').css('opacity', 0.3)
         $(this).css('opacity', 1);
         $('.assessment-box-policy').css('opacity',1)
+
+        var allC = jsPlumb.getAllConnections();
+        $.each(allC, function(key, connection) {
+            connection.setVisible(false);
+        });
+
         $.each(ids, function(key, val) {
             $(val).css('opacity', 1);
+
+
+           
+            var c1 = jsPlumb.getConnections({ target:[asset_id] });
+
+            //if(val.substring(1, 7) == 'device') {
+                var c2 = jsPlumb.getConnections({ target:[val.substring(1, val.length)] });
+            //} else {
+            //    var c2 = [];
+            //}
+
+            var connections = c1.concat(c2);
+
+            $.each(connections, function(key, connection) {
+                connection.setVisible(true);
+            });
+
         });
     });
 
     $('.asset-box').on('mouseleave', function() {
+
+        var allC = jsPlumb.getAllConnections();
+            $.each(allC, function(key, connection) {
+                connection.setVisible(true);
+            });
         $('.assessment-box').css('opacity', 1)
     })
 
