@@ -28,8 +28,12 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Are there multiple user groups in the company? Name them below:</label>
-                            <input type="text" class="form-control" name="name">
+                            <label>What are the different user groups in the company? Name them below:</label>
+                            <div class="usergroups" style="padding: 3px 0;">
+                                <input type="text" class="form-control usergroup-input" style="margin: 3px 0;" name="usergroup[]">
+                            </div>
+                            <a href="#" class="btn btn-sm btn-primary add-usergroup"><i class="fa fa-plus"></i></a>
+
                         </div>
 
 
@@ -42,4 +46,14 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('footer-scripts')
+<script type="text/javascript">
+$(function() {
+    $('.add-usergroup').click(function() {
+        $('.usergroup-input').first().clone(true).val('').appendTo('.usergroups');
+    });
+});
+</script>
 @endsection

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Assessment;
 use Auth;
+use App\Models\Actor;
+use App\Models\ActorType;
 
 class AssessmentController extends Controller {
 
@@ -30,6 +32,23 @@ class AssessmentController extends Controller {
         $a->name = $request->get('name');
         $a->user_id = Auth::user()->id;
         $a->save();
+
+
+        if($request->has('usergroup') && is_array($request->get('usergroup'))) {
+            
+            foreach($request->get('usergroup') as $usergroup) {
+                if(!is_null($usergroup)) {
+                    $actor = new Actor;
+                    $at = ActorType::firstOrFail();
+
+                    $actor->name = $usergroup;
+                    $actor->actortype_id = $at->id;
+                    $actor->assessment_id = $a->id;
+                    $actor->save();
+                }
+            }
+
+        }
 
         return redirect('assessment')->with('flashmessage', ['class' => 'success', 'message' => 'Assessment succesfully created.']);
 

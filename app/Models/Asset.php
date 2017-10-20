@@ -31,7 +31,6 @@ class Asset extends Model
 
 	// Calculate the probability of this asset being breached
 	public function calculateProbability() {
-var_dump($this->effects);
 		$p = 1;
 
 		foreach($this->effects as $e) {
@@ -39,13 +38,6 @@ var_dump($this->effects);
 		}
 
 		$this->probability = 1 - $p;
-
-
-		echo '<br>';
-
-		var_dump($this->probability);
-
-		echo '<br>';
 
 	}
 
