@@ -280,7 +280,44 @@ jsPlumb.ready(function() {
     
     $(function() {
         $('#panel-to-set-height').height($('#row-with-height').height());
+
+
+
+        $('.assessment-box').hover(function() {
+            //$('.assessment-box').css('opacity', 1)
+            //$(this).css('opacity', 1);
+
+            var allC = jsPlumb.getAllConnections();
+            $.each(allC, function(key, connection) {
+                connection.setVisible(false);
+            });
+
+            var id = $(this).attr('id');
+
+
+            var c1 = jsPlumb.getConnections({ target:[id] });
+            var c2 = jsPlumb.getConnections({ source:[id] });
+
+     
+            var connections = c1.concat(c2);
+
+            $.each(connections, function(key, connection) {
+                connection.setVisible(true);
+            });
+
+        });
+        $('.assessment-box').on('mouseleave', function() {
+
+            var allC = jsPlumb.getAllConnections();
+                $.each(allC, function(key, connection) {
+                    connection.setVisible(true);
+                });
+            //$('.assessment-box').css('opacity', 1)
+        })
+
     });
+
+
     
 
     var connectingFrom = null;
