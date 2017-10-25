@@ -249,7 +249,7 @@ jsPlumb.ready(function() {
     @foreach($assessment->devices as $device) 
         @foreach($device->actors as $actor)
 
-            {!! parseConnection($actor->id, 'actor', $device->id, 'device', stringToColorCode($actor->name.$asset->name), '["Top","Bottom"]') !!}
+            {!! parseConnection($actor->id, 'actor', $device->id, 'device', stringToColorCode($actor->name.$actor->name), '["Top","Bottom"]') !!}
 
         @endforeach
 

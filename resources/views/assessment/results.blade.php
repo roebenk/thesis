@@ -171,10 +171,13 @@
                             <?php $i = 1; ?>
                             @foreach($ranking as $key => $ranking)
                                 <?php
+
                                 if($key[0] == 'a')
-                                    $c = $actorsP->get($key[1]);
+                                    $c = $actorsP->get(substr($key, 1));
                                 elseif($key[0] == 'd')
-                                    $c = $devicesP->get($key[1]);
+                                    $c = $devicesP->get(substr($key, 1));
+
+
                                 ?>
                                 <tr>
                                     <td>{{ $i++ }}</td>
